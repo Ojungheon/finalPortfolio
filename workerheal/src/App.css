@@ -1,0 +1,47 @@
+:root {
+  --main-orange-color: #ffaa0c;
+  --main-purple-color: #8041ff;
+  --primary-main: #ffaa0c;
+  --primary-light: #ffbb3c;
+  --primary-dark: #b27608;
+  --primary-text: #ffffff;
+  --secondary-main: #8041ff;
+  --secondary-light: #9967ff;
+  --secondary-dark: #592db2;
+  --secondary-text: #ffffff;
+}
+
+@media print {
+  @page {
+    margin: 0; /* ✅ 페이지 여백 제거 */
+  }
+  
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* ✅ 화면 전체 높이 사용 */
+  }
+
+  body * {
+    visibility: hidden; /* ✅ 전체 요소 숨김 */
+  }
+
+  .print-only, .print-only * {
+    visibility: visible; /* ✅ 특정 영역만 표시 */
+  }
+
+  .print-only {
+    position: relative;
+    width: 80%; /* ✅ 중앙 정렬 및 크기 조정 */
+    max-width: 800px;
+    margin: auto;
+    text-align: center; /* ✅ 내부 내용도 중앙 정렬 */
+  }
+  .print-only button {
+    display: none !important; /* ✅ 프린트할 때 버튼 숨기기 */
+  }
+}
+

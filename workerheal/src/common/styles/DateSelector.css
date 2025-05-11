@@ -1,0 +1,57 @@
+/* 헤더 색상 */
+.react-datepicker__header {
+  background-color: rgb(246, 246, 246);
+}
+
+/* day-name: 요일 */
+.react-datepicker__day-names {
+  background-color: var(--main-orange-color); /* 배경색 */
+}
+.react-datepicker__day-name:nth-child(1) {
+  color: #ff5555; /* 일요일 */
+}
+.react-datepicker__day-name:nth-child(7) {
+  color: #8685ff; /* 토요일 */
+}
+.react-datepicker__day-name {
+  width: 2em;
+}
+
+/* day: 주말 날짜 */
+.react-datepicker__day:nth-child(1) {
+  color: red; /* 일요일 날짜 */
+}
+.react-datepicker__day:nth-child(1).react-datepicker__day--disabled {
+  color: rgba(255, 0, 0, 0.29); /* 비활성화 된 일요일 날짜 */
+}
+.react-datepicker__day:nth-child(7) {
+  color: #8685ff; /* 토요일 날짜 */
+}
+.react-datepicker__day:nth-child(7).react-datepicker__day--disabled {
+  color: #8585ff5f; /* 비활성화 된 토요일 날짜 */
+}
+
+/* 마감된 날짜 표시 */
+.closed-date {
+  background-color: darkgray;
+  border-radius: 0.3rem;
+}
+/* 화면의 datepicker의 추가 설정 (보여지는달력 해당월아닌 다른월 날짜는 회색컬러로 글자처리) */
+.react-datepicker__day--outside-month {
+  color: #a8a8a8 !important;
+  pointer-events: none;
+}
+
+/* 캘린더 영역 폰트 사이즈 */
+.custom-datepicker {
+  /* position: absolute; */
+  font-size: inherit; /* 글자 크기 조정 */
+}
+
+/* 캘린더 일자 별 사이즈 */
+.custom-day {
+  width: 2em;
+  height: 2em;
+  line-height: 1.8em;
+  text-align: center;
+}

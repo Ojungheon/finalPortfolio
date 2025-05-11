@@ -1,0 +1,76 @@
+/* ✅ Toast 팝업 스타일 */
+.my-toast {
+  background: white(255, 255, 255); /* 반투명 배경 */
+  color: black;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+/* ✅ Toast 제목 스타일 */
+.my-toast-title {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ✅ Toast 버튼 스타일 */
+.my-toast-button {
+  background-color: #fdaa0f !important; /* 주황색 */
+  color: white !important;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.my-toast-button:hover {
+  opacity: 0.8;
+}
+
+/* ✅ Alert 팝업 스타일 */
+.my-alert {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* ✅ Alert 제목 스타일 */
+.my-alert-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+/* ✅ Alert 버튼 스타일 */
+.my-alert-button {
+  background-color: #fdaa0f !important; /* 주황색 버튼 */
+  color: white !important;
+  width: 150px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+/* ✅ Check 버튼 스타일 - 태훈 */
+.my-check-button {
+  background-color: #fdaa0f !important; /* 주황색 버튼 */
+  color: white !important;
+  width: 80px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.my-alert-button:hover {
+  opacity: 0.8;
+}
