@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dolearndorun.workerheal_app.payment.PaymentMapper">
+
+    <!-- 다음 시퀀스 번호 확인 -->
+    <select id="getCurrentSeq">
+        SELECT
+        TO_CHAR(SYSDATE, 'YYYYMMDD') || LPAD(TO_CHAR(SEQ_RESERVATION_${type}.NEXTVAL), 3, '0')
+        FROM DUAL
+    </select>
+
+</mapper>
+
+
+
+
+

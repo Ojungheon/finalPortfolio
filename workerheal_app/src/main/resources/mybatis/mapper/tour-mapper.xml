@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dolearndorun.workerheal_app.tour.manager.ManagerTourMapper">
+
+    <!--  관광정보 이미지 파일 등록  -->
+    <insert id="insertTourAttachment" parameterType="java.util.List">
+        INSERT ALL
+        <foreach collection="list" item="item">
+            INTO ATTACHMENT_TOUR_SPOT
+            (
+            NO
+            , TOUR_NO
+            , ORIGIN_NAME
+            , CHANGE_NAME
+            , PATH
+            , ORDER_NO
+            , UPLOAD_DATE
+            )
+            VALUES
+            (
+            (SELECT GET_ATTACHMENT_TOUR_SPOT_NO FROM DUAL)
+            <if test="no == ''">
+                , SEQ_TOUR_SPOT.CURRVAL
+            </if>
+            <if test="no != ''">
+                , #{no}
+            </if>
+            , #{item.originName}
+            , #{item.changeName}
+            , #{item.path}
+            , #{item.orderNo}
+            , SYSDATE
+            )
+        </foreach>
+        SELECT 1 FROM DUAL
+    </insert>
+
+    <!--  관광정보 삭제  -->
+    <update id="deleteTourInfo" parameterType="java.util.List">
+        UPDATE TOUR_SPOT
+        SET
+        DEL_YN = 'Y'
+        WHERE NO IN
+        <foreach collection="list" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <!--  관광정보 이미지 파일 삭제  -->
+    <update id="deleteTourAttachment" parameterType="java.util.List">
+        UPDATE ATTACHMENT_TOUR_SPOT
+        SET
+        DEL_YN = 'Y'
+        <if test="type=='delete'">
+            WHERE TOUR_NO IN
+            <foreach item="item" collection="list" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="type=='edit'">
+            WHERE NO IN
+            <foreach item="item" collection="list" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </update>
+
+    <!--  첨부파일 서버 저장 시 orderNo 재부여  -->
+    <update id="updateOrderNo">
+        UPDATE ATTACHMENT_TOUR_SPOT AT
+        SET ORDER_NO = (
+            SELECT RN FROM (
+                SELECT
+                NO
+                , TOUR_NO
+                , ROWNUM AS RN
+                FROM (
+                    SELECT
+                    NO
+                    , TOUR_NO
+                    FROM ATTACHMENT_TOUR_SPOT
+                    <if test="no == ''">
+                        WHERE TOUR_NO = (SELECT GET_SEQ_TOUR_SPOT_CURRVAL FROM DUAL)
+                    </if>
+                    <if test="no != ''">
+                        WHERE TOUR_NO = #{no}
+                    </if>
+                    AND DEL_YN = 'N'
+                    ORDER BY NO ASC
+                )
+            )
+            WHERE AT.NO = NO
+            AND AT.TOUR_NO = TOUR_NO
+        )
+        <if test="no == ''">
+            WHERE TOUR_NO = (SELECT GET_SEQ_TOUR_SPOT_CURRVAL FROM DUAL)
+        </if>
+        <if test="no != ''">
+            WHERE TOUR_NO = #{no}
+        </if>
+        AND DEL_YN = 'N'
+    </update>
+
+    <!--  삭제할 관광정보 항목의 예약내역 확인 -->
+    <select id="checkTourReservation" parameterType="java.util.List">
+        SELECT
+        T.NAME
+        FROM RESERVATION_TOUR R
+        JOIN TOUR_SPOT T ON (R.TOUR_NO = T.NO)
+        WHERE R.RESERVATE_STATUS = 'R'
+        AND R.TOUR_NO IN
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY T.NAME
+    </select>
+
+</mapper>

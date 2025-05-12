@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dolearndorun.workerheal_app.lodging.manager.ManagerLodgingMapper">
+
+    <!-- 숙소 삭제  -->
+    <update id="deleteLodgingInfo" parameterType="java.util.List">
+        UPDATE LODGING
+        SET
+        DEL_YN = 'Y'
+        WHERE NO IN
+        <foreach collection="list" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <!--  숙소 이미지 파일 삭제  -->
+    <update id="deleteLodgingAttachment" parameterType="java.util.List">
+        UPDATE ATTACHMENT_LODGING
+        SET
+        DEL_YN = 'Y'
+        WHERE LODGING_NO IN
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!--  삭제할 숙소 항목의 예약내역 확인 -->
+    <select id="checkLodgingReservation" parameterType="java.util.List">
+        SELECT
+        L.NAME
+        FROM RESERVATION_LODGING R
+        JOIN LODGING L ON (R.LODGING_NO = L.NO)
+        WHERE R.RESERVATE_STATUS = 'R'
+        AND R.LODGING_NO IN
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY L.NAME
+    </select>
+
+</mapper>

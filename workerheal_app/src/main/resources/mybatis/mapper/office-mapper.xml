@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dolearndorun.workerheal_app.office.manager.ManagerOfficeMapper">
+
+    <!--  오피스 삭제  -->
+    <update id="deleteOfficeInfo" parameterType="java.util.List">
+        UPDATE OFFICE
+        SET
+        DEL_YN = 'Y'
+        WHERE NO IN
+        <foreach collection="list" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <!--  오피스 이미지 파일 삭제  -->
+    <update id="deleteOfficeAttachment" parameterType="java.util.List">
+        UPDATE ATTACHMENT_OFFICE
+        SET
+        DEL_YN = 'Y'
+        WHERE OFFICE_NO IN
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!--  삭제할 오피스 항목의 예약내역 확인 -->
+    <select id="checkOfficeReservation" parameterType="java.util.List">
+        SELECT
+        O.NAME
+        FROM RESERVATION_OFFICE R
+        JOIN OFFICE O ON (R.OFFICE_NO = O.NO)
+        WHERE R.RESERVATE_STATUS = 'R'
+        AND R.OFFICE_NO IN
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY O.NAME
+    </select>
+
+</mapper>

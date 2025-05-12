@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dolearndorun.workerheal_app.roomtype.host.TempRoomtypeMapper">
+
+    <!--  임시숙소 정보 이미지 파일 등록  -->
+    <insert id="insertTempRoomtypeAttachment" parameterType="java.util.List">
+        INSERT ALL
+        <foreach collection="list" item="item">
+            INTO ATTACHMENT_TEMP_ROOM_TYPE
+            (
+            NO
+            , ROOM_TYPE_NO
+            , ORIGIN_NAME
+            , CHANGE_NAME
+            , PATH
+            , ORDER_NO
+            , UPLOAD_DATE
+            , DEL_YN
+            )
+            VALUES
+            (
+            (SELECT GET_ATTACHMENT_TEMP_ROOM_TYPE_NO FROM DUAL)
+            , #{item.roomTypeNo}
+            , #{item.originName}
+            , #{item.changeName}
+            , #{item.path}
+            , #{item.orderNo}
+            , SYSDATE
+            , 'N'
+            )
+        </foreach>
+        SELECT 1 FROM DUAL
+    </insert>
+
+
+
+</mapper>

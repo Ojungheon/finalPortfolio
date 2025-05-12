@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dolearndorun.workerheal_app.approval.ApprovalMapper">
+
+    <!-- 사업장 반려 처리  -->
+    <update id="denyApproval">
+        UPDATE TEMP_${place}
+        SET
+        STATUS_NO = 3
+        WHERE NO = #{no}
+    </update>
+
+    <!-- 임시 테이블에서 승인 처리 된 사업장 정보 삭제 -->
+    <delete id="deleteWorkplaceInfo">
+        DELETE FROM TEMP_${place}
+        <choose>
+            <when test="place eq 'room_type'">
+                WHERE LODGING_NO = #{no}
+            </when>
+            <otherwise>
+                WHERE NO = #{no}
+            </otherwise>
+        </choose>
+    </delete>
+
+    <!-- 임시 테이블에서 승인 처리 된 사업장 첨부파일 삭제 -->
+    <delete id="deleteTempAttachment">
+        DELETE FROM ATTACHMENT_TEMP_${place}
+        <choose>
+            <when test="place eq 'room_type'">
+                WHERE ROOM_TYPE_NO IN (SELECT NO FROM TEMP_ROOM_TYPE WHERE LODGING_NO = #{no})
+            </when>
+            <otherwise>
+                WHERE ${place}_NO = #{no}
+            </otherwise>
+        </choose>
+    </delete>
+
+    <!--  요청 항목 승인 처리 - 사업자 첨부파일 정보 임시 테이블에서 본 테이블로 이전  -->
+    <insert id="acceptWorkplaceAttachment">
+        INSERT INTO ATTACHMENT_${place}
+        (
+        NO
+        , ${place}_NO
+        , ORIGIN_NAME
+        , CHANGE_NAME
+        , PATH
+        , ORDER_NO
+        , UPLOAD_DATE
+        )
+        SELECT
+        SEQ_ATTACHMENT_${place}.NEXTVAL
+        , SEQ_${place}.CURRVAL
+        , ORIGIN_NAME
+        , CHANGE_NAME
+        , PATH
+        , ORDER_NO
+        , UPLOAD_DATE
+        FROM ATTACHMENT_TEMP_${place}
+        WHERE ${place}_NO = #{no}
+    </insert>
+
+</mapper>
